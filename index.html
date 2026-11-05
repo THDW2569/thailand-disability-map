@@ -27,9 +27,8 @@ function content(d,compact=false){
   if(!compact)s+=schoolList(d,key);
  }else if(key==='schools'){
   s+=countLine('สถานศึกษา 4 ประเภทที่ระบุจังหวัดได้',d.schools);
-  for(const k of schoolKeys.filter(k=>k!=='spmDirectory'))s+=countLine(titles[k],d[k]);
-  s+=countLine('โรงเรียนเรียนรวม สพม. (รายชื่อจาก SET)',d.spmDirectory);s+='<div class="subnote">หมายเหตุ: จำนวน สพม. บรรทัดนี้เป็นรายชื่อจาก SET ไม่รวมในยอดสถานศึกษา 4 ประเภทข้างต้น และยังไม่ใช่ยอดโรงเรียนเรียนรวม สพม. ปี 2569</div><div class="schoollisthead">จำนวนนักเรียนของ 4 ประเภทที่ระบุจังหวัดได้</div><div class="line int"><span>เด็กบกพร่องทางสติปัญญา</span><b>'+n(d.intellectual)+' คน</b></div><div class="line aut"><span>เด็กออทิสติก</span><b>'+n(d.autism)+' คน</b></div>';
-  if(!compact)s+='<div class="schoollisthead">แยกจำนวนนักเรียนตามสถานศึกษา</div>'+schoolKeys.filter(k=>k!=='spmDirectory').map(k=>'<div class="schooltype"><b>'+titles[k]+'</b><div>สติปัญญา '+n(d[k+'Intellectual'])+' คน · ออทิสติก '+n(d[k+'Autism'])+' คน</div></div>').join('');
+  for(const k of schoolKeys)s+=countLine(k==='spmDirectory'?'โรงเรียนเรียนรวม สพม. (รายชื่อจาก SET)':titles[k],d[k]);s+='<div class="subnote">หมายเหตุ: จำนวน สพม. บรรทัดนี้เป็นรายชื่อจาก SET ไม่รวมในยอดสถานศึกษา 4 ประเภทข้างต้น และยังไม่ใช่ยอดโรงเรียนเรียนรวม สพม. ปี 2569</div><div class="schoollisthead">จำนวนนักเรียนของ 4 ประเภทที่ระบุจังหวัดได้</div><div class="line int"><span>เด็กบกพร่องทางสติปัญญา</span><b>'+n(d.intellectual)+' คน</b></div><div class="line aut"><span>เด็กออทิสติก</span><b>'+n(d.autism)+' คน</b></div>';
+  if(!compact)s+='<div class="schoollisthead">แยกจำนวนนักเรียนตามสถานศึกษา</div>'+schoolKeys.map(k=>'<div class="schooltype"><b>'+(k==='spmDirectory'?'โรงเรียนเรียนรวม สพม. (รายชื่อจาก SET)':titles[k])+'</b><div>'+(k==='spmDirectory'?'สติปัญญา: ไม่มีข้อมูลรายจังหวัด · ออทิสติก: ไม่มีข้อมูลรายจังหวัด':'สติปัญญา '+n(d[k+'Intellectual'])+' คน · ออทิสติก '+n(d[k+'Autism'])+' คน')+'</div></div>').join('');
  }else{
   s+='<div class="contexttitle">'+titles[key]+' (รวม 4 ประเภท)</div>'+countLine('จำนวนนักเรียน',d[key],'คน');
   for(const k of schoolKeys.filter(k=>k!=='spmDirectory'))s+=countLine(titles[k],d[k+(key==='intellectual'?'Intellectual':'Autism')],'คน');
